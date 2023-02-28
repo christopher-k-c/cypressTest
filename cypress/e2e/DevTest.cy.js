@@ -1,5 +1,5 @@
 // One test file can have any number of describe blocks/suites
-
+var testPassed = false;
 describe('My First Test', () => {
     function checkTheWeather() {
     // A describe block can have multiple it blocks
@@ -58,20 +58,29 @@ describe('My First Test', () => {
                                 // If both tests pass log the success
                                 cy.log('Both Assertions have passed!')
                                 // return "Test Completed! Both Assertions have passed!"
+                                testPassed = true;                                
                             })
+                            
                         })
                         
                     })
                 })
             });    
         })
+
+
+
     }
 
 
+
     function checkTestOutcome(numberOfTests) {
-        if (numberOfTests > 0) {
+
+        if (numberOfTests > 0 && testPassed === false) {
             checkTheWeather();
             checkTestOutcome(numberOfTests - 1);
+        } else if (testPassed === true){
+            return
         }
 
         
