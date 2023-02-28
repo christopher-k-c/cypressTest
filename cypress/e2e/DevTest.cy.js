@@ -19,15 +19,26 @@ describe('My First Test', () => {
             .its('length')
             .then((length) => {
                 // select ten of the 76 random cities
-                // cy.log(length)
                 const cities = Math.floor(Math.random()*length)
                 cy.get('tr:nth-child(' + cities + ') > td:first-child > a').then(($cityName) => {
                     const cityNameText = $cityName.text()
                     cy.log(cityNameText)
+
+                    // Had to make clear which url i wanted to manipulate by using origin
+                    cy.origin('https://www.bbc.co.uk', { args: { cityName: cityNameText } }, ({ cityName }) => {
+                        /* Bceause i am using origin I have to pass the origin function variables as arguments, which means I have to pass the city name 
+                        variable / dom anchor text content as a key pair value instead of passing it as the dom content because it is not serializable according 
+                        to the error i was receiving */
+                        cy.visit('https://www.bbc.co.uk/weather')
+                        cy.get("#ls-c-search__input-label").type(cityName);
+                    })
+                    // cy.visit('https://www.bbc.co.uk/weather')
+                    // cy.get("#ls-c-search__input-label").type($cityName);
                 })
                 
-            });
+        });
             
     })
+
 
 })
