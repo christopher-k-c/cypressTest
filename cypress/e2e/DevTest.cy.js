@@ -26,14 +26,26 @@ describe('My First Test', () => {
 
                     // Had to make clear which url i wanted to manipulate by using origin
                     cy.origin('https://www.bbc.co.uk', { args: { cityName: cityNameText } }, ({ cityName }) => {
-                        /* Bceause i am using origin I have to pass the origin function variables as arguments, which means I have to pass the city name 
+                        /* Because I am using origin I have to pass the origin function variables as arguments, which means I have to pass the city name 
                         variable / dom anchor text content as a key pair value instead of passing it as the dom content because it is not serializable according 
                         to the error i was receiving */
                         cy.visit('https://www.bbc.co.uk/weather')
-                        cy.get("#ls-c-search__input-label").type(cityName);
+
+                        // Type name of city into weather location input field
+                        cy.get("#ls-c-search__input-label").type(cityName)
+
+                        // Target the ul with the id of location-list plus select the first li element in the ul and the a tag
+                        const test = cy.get('#location-list').find('li:first-child > a')
+                        
+                        // Navigate to that web page
+                        test.click()
+                        
+                        // Get the 
+                        const weekForcast = cy.get('[data-pos="6"]')
+
+               
                     })
-                    // cy.visit('https://www.bbc.co.uk/weather')
-                    // cy.get("#ls-c-search__input-label").type($cityName);
+
                 })
                 
         });
