@@ -42,15 +42,23 @@ describe('My First Test', () => {
                         
                         // Get cloud coverage forecast
                         const sunCheck = cy.get('[data-pos="6"] > #daylink-6 > .wr-day__body > .wr-day__details-container > .wr-day__details > .wr-day__weather-type > .wr-weather-type > .wr-weather-type__icon')
-                        sunCheck.invoke('attr', 'title').should('eq', 'Light Cloud')
-                        
-                        // Get Temperature forecast
-                        const checkTemp = cy.get('[data-pos="6"] > #daylink-6 > .wr-day__body > .wr-day__details-container > .wr-day__details > .wr-day__temperature > .wr-day-temperature > .wr-day-temperature__high > .wr-day-temperature__high-value > .wr-value--temperature > .wr-value--temperature--c')
-                        cy.wait(1000)
-                        checkTemp.invoke('text') .should('be.a', 'string').then(parseInt).should('be.a', 'number').should('be.greaterThan', 1)
+                        // If weather is equal to Sleet Showers pass the assertion 
+                        sunCheck.invoke('attr', 'title').should('eq', 'Sleet Showers').then(() => {
+                            // Get Temperature forecast
+                            const checkTemp = cy.get('[data-pos="6"] > #daylink-6 > .wr-day__body > .wr-day__details-container > .wr-day__details > .wr-day__temperature > .wr-day-temperature > .wr-day-temperature__high > .wr-day-temperature__high-value > .wr-value--temperature > .wr-value--temperature--c')
+                            cy.wait(1000)
+                            // If Temperature is greater than 1 pass the assertion 
+                            checkTemp.invoke('text') .should('be.a', 'string').then(parseInt).should('be.a', 'number').should('be.greaterThan', 1)
+                            .then(() => {
+                                // If both tests pass log the success
+                                cy.log('Both Assertions have passed!')
+                            })
+                        })
                         
 
-               
+
+                        
+
                     })
 
                 })
