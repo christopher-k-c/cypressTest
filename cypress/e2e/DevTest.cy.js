@@ -1,9 +1,8 @@
 // One test file can have any number of describe blocks/suites
 
 describe('My First Test', () => {
-    
+    function checkTheWeather() {
     // A describe block can have multiple it blocks
-    
     it('Test1', () => {
         // Every it block represents one test
         // Visit Wiki
@@ -19,6 +18,7 @@ describe('My First Test', () => {
             .its('length')
             .then((length) => {
                 // select ten of the 76 random cities strting from 1
+
                 const cities = Math.floor(Math.random()*length) + 1
                 // Randomly select the row and specify the first td element in that row then stroe that as a var called cityName
                 cy.get('tr:nth-child(' + cities + ') > td:first-child > a').then(($cityName) => {
@@ -27,8 +27,8 @@ describe('My First Test', () => {
                     // Use replace() to remove parentheses from cityNameText
                     // Not sure why it is not working?
                     const cutVar = cityNameText
-                    cy.log(cutVar, "Splice Test")
-                  
+                    // cy.log(cutVar, "Splice Test")
+        
                     // Had to make clear which url i wanted to manipulate by using origin
                     cy.origin('https://www.bbc.co.uk', { args: { cityName: cityNameText } }, ({ cityName }) => {
                         /* Because I am using origin I have to pass the origin function variables as arguments, which means I have to pass the city name 
@@ -57,20 +57,28 @@ describe('My First Test', () => {
                             .then(() => {
                                 // If both tests pass log the success
                                 cy.log('Both Assertions have passed!')
+                                // return "Test Completed! Both Assertions have passed!"
                             })
                         })
                         
-
-
-                        
-
                     })
-
                 })
-                
-        });
-            
-    })
+            });    
+        })
+    }
+
+
+    function checkTestOutcome(numberOfTests) {
+        if (numberOfTests > 0) {
+            checkTheWeather();
+            checkTestOutcome(numberOfTests - 1);
+        }
+
+        
+    }
+    checkTestOutcome(10);
+      
+
 
 
 })
